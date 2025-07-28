@@ -14,12 +14,22 @@ const charReplacements = {
   c: 'ch',
 };
 
+const wordFiles = ['verbs.json', 'nouns.json', 'basic-grammar.json'];
 let wordReplacements = {};
+
+async function loadWordReplacements() {
+  let combined = {};
+  for (const file of wordFiles) {
+    const res = await fetch(file);
+    const data = await res.json();
+    Object.assign(combined, data);
+  }
+  return combined;
+}
 
 async function transliterate() {
   if (Object.keys(wordReplacements).length === 0) {
-    const res = await fetch('words.json');
-    wordReplacements = await res.json();
+    wordReplacements = await loadWordReplacements();
   }
 
   let text = document.getElementById('input').value;
