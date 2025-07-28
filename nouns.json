@@ -1,6 +1,19 @@
 {
+  "kawnsl": "council",
   "kawnslz": "councils",
+  "workr": "worker",
   "wrkrz": "workers",
   "prsn": "person",
-  "pawr": "power"
+  "prsnz": "persons",
+  "pawr": "power",
+  "pawrz": "powers",
+  "sõqlist": "socialist",
+  "sōqlist": "socialist",
+  "sõqlists": "socialist",
+  "sōqlists": "socialist",
+  "midl": "middle",
+  "manijmnt": "management",
+  "ofisrz": "officers",
+  "konstnt": "constant",
+  "konstants": "constants"
 }

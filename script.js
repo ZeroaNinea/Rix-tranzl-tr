@@ -34,14 +34,16 @@ async function transliterate() {
 
   let text = document.getElementById('input').value;
 
+  let words =
+    text.match(/[\p{L}\p{M}\p{N}']+|\s+|[^\s\p{L}\p{M}\p{N}']+/gu) || [];
+  words = words.map((w) => wordReplacements[w] || w);
+  text = words.join('');
+
   for (let char in charReplacements) {
     text = text.replaceAll(char, charReplacements[char]);
   }
 
-  let words = text.split(/\b/);
-  words = words.map((w) => wordReplacements[w] || w);
-
-  document.getElementById('output').textContent = words.join('');
+  document.getElementById('output').textContent = text;
 }
 
 window.transliterate = transliterate;
