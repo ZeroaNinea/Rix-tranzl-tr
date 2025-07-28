@@ -3,7 +3,9 @@ function transliterate() {
     ē: 'ee',
     ā: 'ey',
     ū: 'yu',
-    ō: 'oh',
+    ō: 'ou',
+    õ: 'ou',
+    ố: 'ou',
     ī: 'eye',
     ł: 'oo',
     œ: 'oo',
@@ -22,6 +24,7 @@ function transliterate() {
     pawr: 'power',
     wæd: 'would',
     wœd: 'would',
+    wrk: 'work',
   };
 
   let text = document.getElementById('input').value;
