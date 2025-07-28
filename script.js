@@ -1,31 +1,26 @@
-function transliterate() {
-  const charReplacements = {
-    ē: 'ee',
-    ā: 'ey',
-    ū: 'yu',
-    ō: 'ou',
-    õ: 'ou',
-    ố: 'ou',
-    ī: 'eye',
-    ł: 'oo',
-    œ: 'oo',
-    æ: 'oo',
-    q: 'sh',
-    c: 'ch',
-  };
+const charReplacements = {
+  ē: 'ee',
+  ë: 'ee',
+  ā: 'ey',
+  ū: 'yu',
+  ō: 'ou',
+  õ: 'ou',
+  ố: 'ou',
+  ī: 'ay',
+  ł: 'oo',
+  œ: 'oo',
+  æ: 'oo',
+  q: 'sh',
+  c: 'ch',
+};
 
-  const wordReplacements = {
-    bē: 'be',
-    mā: 'may',
-    thu: 'the',
-    kawnslz: 'councils',
-    wrkrz: 'workers',
-    prsn: 'person',
-    pawr: 'power',
-    wæd: 'would',
-    wœd: 'would',
-    wrk: 'work',
-  };
+let wordReplacements = {};
+
+async function transliterate() {
+  if (Object.keys(wordReplacements).length === 0) {
+    const res = await fetch('words.json');
+    wordReplacements = await res.json();
+  }
 
   let text = document.getElementById('input').value;
 
