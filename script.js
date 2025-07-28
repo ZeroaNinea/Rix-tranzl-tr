@@ -10,8 +10,8 @@ const charReplacements = {
   ł: 'oo',
   œ: 'oo',
   æ: 'oo',
-  q: 'sh',
-  c: 'ch',
+  // q: 'sh',
+  // c: 'ch',
 };
 
 const wordFiles = [

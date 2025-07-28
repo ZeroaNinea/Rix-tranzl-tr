@@ -1,7 +1,7 @@
 {
   "kawnsl": "council",
   "kawnslz": "councils",
-  "workr": "worker",
+  "wrkr": "worker",
   "wrkrz": "workers",
   "prsn": "person",
   "prsnz": "persons",
@@ -20,5 +20,15 @@
   "wun": "one",
   "pēpl": "people",
   "mjorite": "majority",
-  "faktre": "factory"
+  "faktre": "factory",
+  "uqrins": "insurance",
+  "inspekqns": "inspections",
+  "inspekqn": "inspection",
+  "bodē": "body",
+  "wrkplās": "workplace",
+  "levl": "level",
+  "levlz": "levels",
+  "inspektr": "inspector",
+  "industrē": "industry",
+  "industrēz": "industries"
 }
