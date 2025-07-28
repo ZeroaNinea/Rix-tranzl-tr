@@ -30,6 +30,16 @@ async function loadWordReplacements() {
   return combined;
 }
 
+function preserveCase(original, replacement) {
+  if (original === original.toUpperCase()) {
+    return replacement.toUpperCase();
+  }
+  if (original[0] === original[0].toUpperCase()) {
+    return replacement[0].toUpperCase() + replacement.slice(1);
+  }
+  return replacement;
+}
+
 async function transliterate() {
   if (Object.keys(wordReplacements).length === 0) {
     wordReplacements = await loadWordReplacements();
@@ -37,16 +47,24 @@ async function transliterate() {
 
   let text = document.getElementById('input').value;
 
-  let words =
+  let parts =
     text.match(/[\p{L}\p{M}\p{N}']+|\s+|[^\s\p{L}\p{M}\p{N}']+/gu) || [];
-  words = words.map((w) => wordReplacements[w] || w);
-  text = words.join('');
+
+  parts = parts.map((part) => {
+    const lowercase = part.toLowerCase();
+    if (wordReplacements[lowercase]) {
+      return preserveCase(part, wordReplacements[lowercase]);
+    }
+    return part;
+  });
+
+  let transformed = parts.join('');
 
   for (let char in charReplacements) {
-    text = text.replaceAll(char, charReplacements[char]);
+    transformed = transformed.replaceAll(char, charReplacements[char]);
   }
 
-  document.getElementById('output').textContent = text;
+  document.getElementById('output').textContent = transformed;
 }
 
 transliterate();
