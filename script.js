@@ -14,7 +14,12 @@ const charReplacements = {
   c: 'ch',
 };
 
-const wordFiles = ['verbs.json', 'nouns.json', 'basic-grammar.json'];
+const wordFiles = [
+  'verbs.json',
+  'nouns.json',
+  'basic-grammar.json',
+  'adjectives.json',
+];
 let wordReplacements = {};
 
 async function loadWordReplacements() {
