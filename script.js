@@ -7,6 +7,7 @@ function transliterate() {
     ī: 'eye',
     ł: 'oo',
     œ: 'oo',
+    æ: 'oo',
     q: 'sh',
     c: 'ch',
   };
@@ -19,6 +20,8 @@ function transliterate() {
     wrkrz: 'workers',
     prsn: 'person',
     pawr: 'power',
+    wæd: 'would',
+    wœd: 'would',
   };
 
   let text = document.getElementById('input').value;
@@ -32,3 +35,5 @@ function transliterate() {
 
   document.getElementById('output').textContent = words.join('');
 }
+
+window.transliterate = transliterate;
