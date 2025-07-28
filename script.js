@@ -1,12 +1,12 @@
 const charReplacements = {
   ē: 'ee',
   ë: 'ee',
-  ā: 'ey',
+  ā: 'ei',
   ū: 'yu',
   ō: 'ou',
   õ: 'ou',
   ố: 'ou',
-  ī: 'ay',
+  ī: 'ai',
   ł: 'oo',
   œ: 'oo',
   æ: 'oo',
@@ -48,5 +48,7 @@ async function transliterate() {
 
   document.getElementById('output').textContent = text;
 }
+
+transliterate();
 
 window.transliterate = transliterate;
