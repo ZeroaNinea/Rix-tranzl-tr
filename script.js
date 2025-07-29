@@ -40,14 +40,49 @@ function preserveCase(original, replacement) {
   return replacement;
 }
 
+async function joinContractions(tokens) {
+  const contractions = await fetch('contractions.json').then((res) =>
+    res.json()
+  );
+
+  const result = [];
+  let i = 0;
+  while (i < tokens.length) {
+    let matched = false;
+    for (let len = 5; len >= 3; len -= 2) {
+      const slice = tokens.slice(i, i + len);
+      const key = slice.map((t) => t.toLowerCase()).join(' ');
+      if (contractions[key]) {
+        // console.log(contractions[key]);
+        result.push(contractions[key]);
+        i += len;
+        matched = true;
+        break;
+      }
+    }
+    if (!matched) {
+      result.push(tokens[i]);
+      i++;
+    }
+  }
+  return result;
+}
+
 async function transliterate() {
   if (Object.keys(wordReplacements).length === 0) {
     wordReplacements = await loadWordReplacements();
   }
 
-  let text = document.getElementById('input').value.replaceAll("'", '`');
+  let text = document.getElementById('input').value;
 
-  let parts = text.match(/[\p{L}\p{M}\p{N}']+|\s+|[^\s\p{L}\p{M}\p{N}]+/gu);
+  for (let char in charReplacements) {
+    text = text.replaceAll(char, charReplacements[char]);
+  }
+
+  let parts =
+    text.match(/[\p{L}\p{M}\p{N}]+|\s+|[^\s\p{L}\p{M}\p{N}]+/gu) || [];
+
+  parts = await joinContractions(parts);
 
   parts = parts.map((part) => {
     const lowercase = part.toLowerCase();
@@ -57,15 +92,7 @@ async function transliterate() {
     return part;
   });
 
-  let transformed = parts.join('');
-  console.log(transformed);
-
-  for (let char in charReplacements) {
-    transformed = transformed.replaceAll(char, charReplacements[char]);
-    console.log(transformed);
-  }
-
-  document.getElementById('output').textContent = transformed;
+  document.getElementById('output').textContent = parts.join('');
 }
 
 transliterate();
