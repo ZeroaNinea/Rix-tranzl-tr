@@ -45,10 +45,9 @@ async function transliterate() {
     wordReplacements = await loadWordReplacements();
   }
 
-  let text = document.getElementById('input').value;
+  let text = document.getElementById('input').value.replaceAll("'", '`');
 
-  let parts =
-    text.match(/[\p{L}\p{M}\p{N}']+|\s+|[^\s\p{L}\p{M}\p{N}']+/gu) || [];
+  let parts = text.match(/[\p{L}\p{M}\p{N}']+|\s+|[^\s\p{L}\p{M}\p{N}]+/gu);
 
   parts = parts.map((part) => {
     const lowercase = part.toLowerCase();
@@ -59,9 +58,11 @@ async function transliterate() {
   });
 
   let transformed = parts.join('');
+  console.log(transformed);
 
   for (let char in charReplacements) {
     transformed = transformed.replaceAll(char, charReplacements[char]);
+    console.log(transformed);
   }
 
   document.getElementById('output').textContent = transformed;
