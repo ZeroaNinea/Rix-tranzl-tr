@@ -74,14 +74,9 @@ async function transliterate() {
 
   let text = document.getElementById('input').value;
 
-  for (let char in charReplacements) {
-    text = text.replaceAll(char, charReplacements[char]);
-  }
+  let parts = text.match(/[\p{L}\p{M}\p{N}]+|\s+|[^\s\p{L}\p{M}\p{N}]+/gu);
 
-  let parts =
-    text.match(/[\p{L}\p{M}\p{N}]+|\s+|[^\s\p{L}\p{M}\p{N}]+/gu) || [];
-
-  parts = await joinContractions(parts);
+  pats = await joinContractions(parts);
 
   parts = parts.map((part) => {
     const lowercase = part.toLowerCase();
@@ -91,7 +86,14 @@ async function transliterate() {
     return part;
   });
 
-  document.getElementById('output').textContent = parts.join('');
+  let transformed = parts.join('');
+
+  for (let char in charReplacements) {
+    transformed = transformed.replaceAll(char, charReplacements[char]);
+    console.log(transformed);
+  }
+
+  document.getElementById('output').textContent = transformed;
 }
 
 transliterate();
