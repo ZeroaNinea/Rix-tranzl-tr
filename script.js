@@ -23,7 +23,7 @@ let wordReplacements = {};
 async function loadWordReplacements() {
   let combined = {};
   for (const file of wordFiles) {
-    const res = await fetch(file);
+    const res = await fetch(`dictionary/${file}`);
     const data = await res.json();
     Object.assign(combined, data);
   }
@@ -41,7 +41,7 @@ function preserveCase(original, replacement) {
 }
 
 async function joinContractions(tokens) {
-  const contractions = await fetch('contractions.json').then((res) =>
+  const contractions = await fetch('dictionary/contractions.json').then((res) =>
     res.json()
   );
 
@@ -53,7 +53,6 @@ async function joinContractions(tokens) {
       const slice = tokens.slice(i, i + len);
       const key = slice.map((t) => t.toLowerCase()).join(' ');
       if (contractions[key]) {
-        // console.log(contractions[key]);
         result.push(contractions[key]);
         i += len;
         matched = true;
