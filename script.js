@@ -90,7 +90,6 @@ async function transliterate() {
 
   for (let char in charReplacements) {
     transformed = transformed.replaceAll(char, charReplacements[char]);
-    console.log(transformed);
   }
 
   document.getElementById('output').textContent = transformed;
