@@ -17,6 +17,7 @@ const wordFiles = [
   'nouns.json',
   'basic-grammar.json',
   'adjectives.json',
+  'abbreviations.json',
 ];
 let wordReplacements = {};
 
