@@ -22,7 +22,6 @@ This tool was inspired by Rixie, — a very smart girl, actually, the creator of
 By the way, this is Kat silē. Hehehe...  
 \>:3
 
-<!-- markdownlint-disable-next-line MD033 -->
 <img src="./images/Kat_sile.png" alt="Kat silē" width="225" />
 
 _Yup, Kat silē (a meme from our Discord server). They're a very cute and silly cat, actually._
