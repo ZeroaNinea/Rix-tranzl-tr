@@ -2,7 +2,7 @@ const charReplacements = {
   ē: 'ee',
   ë: 'ee',
   ā: 'ei',
-  ū: 'yu',
+  ū: 'u',
   ō: 'ou',
   õ: 'ou',
   ố: 'ou',
