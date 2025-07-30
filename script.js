@@ -1,6 +1,6 @@
 const charReplacements = {
-  ē: 'ee',
-  ë: 'ee',
+  ē: 'y',
+  ë: 'y',
   ā: 'ei',
   ū: 'u',
   ō: 'ou',
