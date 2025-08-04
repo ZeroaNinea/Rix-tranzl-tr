@@ -90,9 +90,9 @@ async function transliterate() {
 
   let transformed = parts.join('');
 
-  for (let char in charReplacements) {
-    transformed = transformed.replaceAll(char, charReplacements[char]);
-  }
+  // for (let char in charReplacements) {
+  //   transformed = transformed.replaceAll(char, charReplacements[char]);
+  // }
 
   document.getElementById('output').textContent = transformed;
 }
