@@ -54,6 +54,7 @@ Please respect the secrecy of the project!
 - **ī:** /ɑɪ/
 - **ā:** /eɪ/
 - **ō:** /əʊ/
+- **ū:** /ju/
 
 ### Consonants
 
