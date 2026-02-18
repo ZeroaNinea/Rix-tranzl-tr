@@ -80,3 +80,4 @@ Please respect the secrecy of the project!
 - **ch:** /ʧ/
 - **th:** /θ/ or /ð/
 - **y:** /j/
+- **x:** /ks/
