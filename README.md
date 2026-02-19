@@ -75,9 +75,9 @@ Please respect the secrecy of the project!
 - **v:** /v/
 - **w:** /w/
 - **ng:** /ŋ/
-- **sh:** /ʃ/
-- **zh:** /ʒ/
-- **ch:** /ʧ/
+- **q:** /ʃ/
+- **q:** /ʒ/
+- **c:** /ʧ/
 - **th:** /θ/ or /ð/
 - **y:** /j/
 - **x:** /ks/
