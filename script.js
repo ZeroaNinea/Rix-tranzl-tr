@@ -102,21 +102,43 @@
 // window.transliterate = transliterate;
 const { createApp } = Vue;
 
-const ipaReplacements = {
-  '&': 'æ',
+const rixespekReplacements = {
+  // IPA
+  // '&': 'æ',
+  // '.': 'ˌ',
+  // U: 'ʊ',
+  // S: 'ʃ',
+  // R: 'r',
+  // O: 'ɔː',
+  // Z: 'ʒ',
+  // V: 'ʌ',
+  // N: 'ŋ',
+  // u: 'uː',
+  // T: 'θ',
+  // D: 'ð',
+  // i: 'iː',
+  // A: 'ɑː',
+  // Rexēspēk
+  '&': 'a',
   '.': 'ˌ',
-  U: 'ʊ',
-  S: 'ʃ',
+  U: 'œ',
+  S: 'q',
   R: 'r',
-  O: 'ɔː',
-  Z: 'ʒ',
-  V: 'ʌ',
-  N: 'ŋ',
-  u: 'uː',
-  T: 'θ',
-  D: 'ð',
-  i: 'iː',
-  A: 'ɑː',
+  O: 'o',
+  Z: 'q',
+  V: 'u',
+  N: 'ng',
+  ju: 'ū',
+  u: 'ł',
+  T: 'th',
+  D: 'th',
+  aI: 'ī',
+  i: 'ē',
+  eI: 'ā',
+  I: 'i',
+  '@U': 'ō',
+  '@': '',
+  "'": '',
 };
 
 createApp({
@@ -155,9 +177,9 @@ async function transliterate(text, dictionary) {
     if (dictionary[lower]) {
       let phonetic = dictionary[lower];
 
-      phonetic = asciiToIPA(phonetic);
+      phonetic = asciiToRixespek(phonetic);
 
-      console.log('lower phonetic', lower, phonetic);
+      // console.log(dictionary[lower], phonetic);
 
       return preserveCase(part, phonetic);
     }
@@ -178,29 +200,39 @@ function preserveCase(original, replacement) {
   return replacement;
 }
 
-function asciiToIPA(text) {
+function asciiToRixespek(text) {
   // for (const key in ipaReplacements) {
   //   const regex = new RegExp(key, 'g');
+  //   console.log('regex', regex);
+  //   console.log('before', text);
   //   text = text.replace(regex, ipaReplacements[key]);
+  //   console.log('after', text);
   // }
 
+  // console.log('text', text);
   // return text;
 
-  return text
-    .replace(/&/g, 'æ')
-    .replace(/\./g, 'ˌ')
-    .replace(/U/g, 'ʊ')
-    .replace(/S/g, 'ʃ')
-    .replace(/R/g, 'r')
-    .replace(/O/g, 'ɔː')
-    .replace(/Z/g, 'ʒ')
-    .replace(/V/g, 'ʌ')
-    .replace(/N/g, 'ŋ')
-    .replace(/u/g, 'uː')
-    .replace(/T/g, 'θ')
-    .replace(/D/g, 'ð')
-    .replace(/i/g, 'iː')
-    .replace(/A/g, 'ɑː');
+  for (const key in rixespekReplacements) {
+    text = text.replaceAll(key, rixespekReplacements[key]);
+  }
+
+  return text;
+
+  // return text
+  //   .replace(/&/g, 'æ')
+  //   .replace(/\./g, 'ˌ')
+  //   .replace(/U/g, 'ʊ')
+  //   .replace(/S/g, 'ʃ')
+  //   .replace(/R/g, 'r')
+  //   .replace(/O/g, 'ɔː')
+  //   .replace(/Z/g, 'ʒ')
+  //   .replace(/V/g, 'ʌ')
+  //   .replace(/N/g, 'ŋ')
+  //   .replace(/u/g, 'uː')
+  //   .replace(/T/g, 'θ')
+  //   .replace(/D/g, 'ð')
+  //   .replace(/i/g, 'iː')
+  //   .replace(/A/g, 'ɑː');
 }
 
 window.transliterate = transliterate;
