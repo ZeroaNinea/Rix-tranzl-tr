@@ -56,6 +56,7 @@ charsAtWordEnd = {
   '@U': 'ō',
   U: 'w',
   aI: 'ī',
+  eI: 'ā',
   I: 'ē',
 };
 
