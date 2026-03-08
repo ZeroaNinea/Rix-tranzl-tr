@@ -31,6 +31,8 @@ const rixespekReplacements = {
   R: 'r',
   0: 'o',
   O: 'o',
+  j: 'y',
+  dZ: 'j',
   Z: 'q',
   N: 'ng',
   ju: 'ū',
@@ -38,7 +40,6 @@ const rixespekReplacements = {
   V: 'u',
   T: 'th',
   D: 'th',
-
   A: 'a',
   i: 'ē',
   eI: 'ā',
@@ -49,7 +50,6 @@ const rixespekReplacements = {
   ˌ: '',
   '.': '',
   ks: 'x',
-  j: 'y',
 };
 
 charsAtWordEnd = {
