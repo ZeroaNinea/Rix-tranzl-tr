@@ -123,27 +123,26 @@ createApp({
 }).mount('#app');
 
 async function loadWordReplacements() {
-  let combined = {};
-  for (const file of wordFiles) {
-    const res = await fetch(`dictionary/${file}`);
-    const data = await res.json();
-    Object.assign(combined, data);
-  }
-  return combined;
+  const res = await fetch('dictionary/English-phonetic-transcription.json');
+  const data = await res.json();
+  return data;
 }
 
-async function transliterate(text, wordReplacements) {
-  const parts = text.match(/[\p{L}\p{M}\p{N}]+|\s+|[^\s\p{L}\p{M}\p{N}]+/gu);
-  const transformed = parts
-    .map((part) => {
-      const lowercase = part.toLowerCase();
-      if (wordReplacements[lowercase]) {
-        return preserveCase(part, wordReplacements[lowercase]);
-      }
-      return part;
-    })
-    .join('');
-  return transformed;
+async function transliterate(text, dictionary) {
+  const parts =
+    text.match(/[\p{L}\p{M}\p{N}]+|\s+|[^\s\p{L}\p{M}\p{N}]+/gu) || [];
+
+  const result = parts.map((part) => {
+    const lower = part.toLowerCase();
+
+    if (dictionary[lower]) {
+      return preserveCase(part, dictionary[lower]);
+    }
+
+    return part;
+  });
+
+  return result.join('');
 }
 
 function preserveCase(original, replacement) {
