@@ -3,8 +3,6 @@
 Welcome to the **Rixētranzlātr** project!
 This tool was inspired by Rixie, — a very smart girl, actually, the creator of **Rixēspēk** — a very mysterious and unintelligible way to write English that almost nobody can decode (the best writing system in the entire omniverse, actually). Despite the challenge, I decided to build a translator for Rixēspēk, but Rixie told me not to show this to anyone, so this repository is private and contains a very secret technology, top secret, actually.
 
----
-
 ## About This Project
 
 - **Rixēspēk** is a secret code.
@@ -15,8 +13,6 @@ This tool was inspired by Rixie, — a very smart girl, actually, the creator of
 
 > Ya, actually, I can understand Rixēspēk, but it's difficult.
 
----
-
 ## Kat silē (cat silly)
 
 By the way, this is Kat silē. Hehehe...
@@ -26,14 +22,26 @@ By the way, this is Kat silē. Hehehe...
 
 _Yup, Kat silē (a meme from our Discord server). They're a very cute and silly cat, actually._
 
----
-
 ## Disclaimer
 
 This repository is private and for fun.
 Please respect the secrecy of the project!
 
----
+## How to Run?
+
+If you have Python or `http-server` installed, you can run this project locally by entering the following commands in your terminal.
+
+Run with Python:
+
+```bash
+python3 -m http.server 8080
+```
+
+Run with `http-server`:
+
+```bash
+http-server -p 8080
+```
 
 ## The Official Rixēletrz
 
