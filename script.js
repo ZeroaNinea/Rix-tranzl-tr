@@ -65,7 +65,7 @@ charsAtWordEnd = {
   I: 'ē',
 };
 
-vowels = ['a', 'e', 'i', 'o', 'u', '@', 'aI', 'eI', 'I', 'uI', 'oI', 'U', 'V'];
+vowels = ['a', 'e', 'i', 'o', 'u', '@', 'I', 'U', 'V'];
 
 vowels.forEach((vowel) => {
   charsAtWordEnd[vowel + 'U'] = vowel + 'w';
