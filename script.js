@@ -54,11 +54,17 @@ const rixespekReplacements = {
 
 charsAtWordEnd = {
   '@U': 'ō',
-  U: 'w',
+  // U: 'w',
   aI: 'ī',
   eI: 'ā',
   I: 'ē',
 };
+
+vowels = ['a', 'e', 'i', 'o', 'u', '@', 'aI', 'eI', 'I', 'uI', 'oI', 'U', 'V'];
+
+vowels.forEach((vowel) => {
+  charsAtWordEnd[vowel + 'U'] = vowel + 'w';
+});
 
 createApp({
   data() {
