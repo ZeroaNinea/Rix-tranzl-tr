@@ -34,6 +34,7 @@ const rixespekReplacements = {
   ju: 'ū',
   j: 'y',
   dZ: 'j',
+  tq: 'c',
   Z: 'q',
   N: 'ng',
   u: 'ł',
