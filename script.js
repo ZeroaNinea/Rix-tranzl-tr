@@ -49,6 +49,7 @@ const rixespekReplacements = {
   ˌ: '',
   '.': '',
   ks: 'x',
+  j: 'y',
 };
 
 charsAtWordEnd = {
