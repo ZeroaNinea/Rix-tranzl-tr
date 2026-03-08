@@ -1,15 +1,27 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Rixētranzlātr</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script defer src="script.js"></script>
   </head>
   <body>
-    <h1 style="margin: 0; margin-left: 0.5rem">Rixētranzlātr</h1>
+    <!-- <h1 style="margin: 0; margin-left: 0.5rem">Rixētranzlātr</h1>
     <h5 style="margin: 0.1rem; margin-left: 0.25rem; margin-bottom: 1rem">
-      Māx Rixē mor undrstandbl krīz verē hard to krāt :(
+      Māx Rixē mor undrstandbl krīz verē hard to krēāt :(
     </h5>
     <textarea id="input" style="width: 98vw; height: 30vh"></textarea>
     <button onclick="transliterate()">Convert</button>
@@ -21,6 +33,18 @@
         white-space: pre-wrap;
         margin-top: 1rem;
       "
-    ></div>
+    ></div> -->
+    <div id="app">
+      <h1>Rixētranzlātr</h1>
+      <p class="text-muted">
+        Māx Rixē mor undrstandbl krīz verē hard to krēāt :(
+      </p>
+
+      <textarea class="form-control mb-3" rows="8" v-model="input"></textarea>
+
+      <button class="btn btn-primary mb-3" @click="convert">Convert</button>
+
+      <pre class="border p-3">{{ output }}</pre>
+    </div>
   </body>
 </html>
