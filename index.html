@@ -44,7 +44,9 @@
 
       <button class="btn btn-primary mb-3" @click="convert">Convert</button>
 
-      <pre class="border p-3">{{ output }}</pre>
+      <div style="white-space: pre-wrap" class="border p-3 text-break">
+        {{ output }}
+      </div>
     </div>
   </body>
 </html>

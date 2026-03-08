@@ -133,12 +133,16 @@ const rixespekReplacements = {
   T: 'th',
   D: 'th',
   aI: 'ī',
+  A: 'a',
   i: 'ē',
   eI: 'ā',
   I: 'i',
   '@U': 'ō',
   '@': '',
   "'": '',
+  3: 'r',
+  0: 'o',
+  ˌ: '',
 };
 
 createApp({
