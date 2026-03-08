@@ -88,8 +88,8 @@ consonants = [
   'w',
   'x',
   'y',
-  'z',
   'Z',
+  'z',
   'S',
   'T',
   'D',
@@ -97,7 +97,10 @@ consonants = [
 
 vowels.forEach((vowel) => {
   charsAtWordEnd[vowel + 'U'] = vowel + 'w';
-  charsAtWordEnd[vowel + 'I'] = vowel + 'y';
+
+  if (!vowel === 'a') {
+    charsAtWordEnd[vowel + 'I'] = vowel + 'y';
+  }
 });
 
 consonants.forEach((consonant) => {
