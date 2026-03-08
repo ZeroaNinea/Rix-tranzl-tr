@@ -23,6 +23,7 @@ const rixespekReplacements = {
   // I: 'iː',
   // 3: '3ː',
   // Rexēspēk
+  aI: 'ī',
   '@U': 'ō',
   '&': 'a',
   U: 'œ',
@@ -37,16 +38,14 @@ const rixespekReplacements = {
   V: 'u',
   T: 'th',
   D: 'th',
-  aI: 'ī',
+
   A: 'a',
   i: 'ē',
   eI: 'ā',
   I: 'i',
-
   '@': '',
   "'": '',
   3: 'r',
-
   ˌ: '',
   '.': '',
 };
@@ -111,7 +110,11 @@ function preserveCase(original, replacement) {
 }
 
 function asciiToRixespek(text) {
-  text = text.replace(/@U$/, 'ō').replace(/U$/, 'w').replace(/I$/, 'ē');
+  text = text
+    .replace(/@U$/, 'ō')
+    .replace(/U$/, 'w')
+    .replace(/aI$/, 'ī')
+    .replace(/I$/, 'ē');
 
   for (const key in rixespekReplacements) {
     text = text.replaceAll(key, rixespekReplacements[key]);
