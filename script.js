@@ -63,13 +63,45 @@ charsAtWordEnd = {
   // U: 'w',
   aI: 'ī',
   eI: 'ā',
-  I: 'ē',
+  // I: 'ē',
 };
 
 vowels = ['a', 'e', 'i', 'o', 'u', '@', 'I', 'U', 'V'];
+consonants = [
+  'b',
+  'c',
+  'd',
+  'f',
+  'g',
+  'h',
+  'j',
+  'k',
+  'l',
+  'm',
+  'n',
+  'p',
+  'q',
+  'r',
+  's',
+  't',
+  'v',
+  'w',
+  'x',
+  'y',
+  'z',
+  'Z',
+  'S',
+  'T',
+  'D',
+];
 
 vowels.forEach((vowel) => {
   charsAtWordEnd[vowel + 'U'] = vowel + 'w';
+  charsAtWordEnd[vowel + 'I'] = vowel + 'y';
+});
+
+consonants.forEach((consonant) => {
+  charsAtWordEnd[consonant + 'I'] = consonant + 'ē';
 });
 
 createApp({
