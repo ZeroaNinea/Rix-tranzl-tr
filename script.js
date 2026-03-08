@@ -125,16 +125,18 @@ const rixespekReplacements = {
   // I: 'iː',
   // 3: '3ː',
   // Rexēspēk
+  '@U': 'ō',
   '&': 'a',
   U: 'œ',
   S: 'q',
   R: 'r',
-  O: 'ō',
+  0: 'o',
+  O: 'o',
   Z: 'q',
-  V: 'u',
   N: 'ng',
   ju: 'ū',
   u: 'ł',
+  V: 'u',
   T: 'th',
   D: 'th',
   aI: 'ī',
@@ -142,12 +144,13 @@ const rixespekReplacements = {
   i: 'ē',
   eI: 'ā',
   I: 'i',
-  '@U': 'ō',
+
   '@': '',
   "'": '',
   3: 'r',
-  0: 'o',
+
   ˌ: '',
+  '.': '',
 };
 
 createApp({
@@ -188,7 +191,7 @@ async function transliterate(text, dictionary) {
 
       phonetic = asciiToRixespek(phonetic);
 
-      // console.log(dictionary[lower], phonetic);
+      console.log(dictionary[lower], phonetic);
 
       return preserveCase(part, phonetic);
     }
@@ -221,9 +224,13 @@ function asciiToRixespek(text) {
   // console.log('text', text);
   // return text;
 
+  text = text.replace(/@U$/, 'ō').replace(/U$/, 'w').replace(/I$/, 'ē');
+
   for (const key in rixespekReplacements) {
     text = text.replaceAll(key, rixespekReplacements[key]);
   }
+
+  // Replace the letter U at the end of the word with W
 
   return text;
 
