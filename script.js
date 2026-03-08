@@ -50,6 +50,13 @@ const rixespekReplacements = {
   '.': '',
 };
 
+charsAtWordEnd = {
+  '@U': 'ō',
+  U: 'w',
+  aI: 'ī',
+  I: 'ē',
+};
+
 createApp({
   data() {
     return {
@@ -110,17 +117,21 @@ function preserveCase(original, replacement) {
 }
 
 function asciiToRixespek(text) {
-  text = text
-    .replace(/@U$/, 'ō')
-    .replace(/U$/, 'w')
-    .replace(/aI$/, 'ī')
-    .replace(/I$/, 'ē');
+  for (const key in charsAtWordEnd) {
+    const regex = new RegExp(escapeRegex(key) + '$', 'i');
+    text = text.replace(regex, charsAtWordEnd[key]);
+  }
 
   for (const key in rixespekReplacements) {
-    text = text.replaceAll(key, rixespekReplacements[key]);
+    const regex = new RegExp(escapeRegex(key), 'g');
+    text = text.replace(regex, rixespekReplacements[key]);
   }
 
   return text;
+}
+
+function escapeRegex(str) {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
 window.transliterate = transliterate;
