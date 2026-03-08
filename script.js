@@ -102,6 +102,23 @@
 // window.transliterate = transliterate;
 const { createApp } = Vue;
 
+const ipaReplacements = {
+  '&': 'æ',
+  '.': 'ˌ',
+  U: 'ʊ',
+  S: 'ʃ',
+  R: 'r',
+  O: 'ɔː',
+  Z: 'ʒ',
+  V: 'ʌ',
+  N: 'ŋ',
+  u: 'uː',
+  T: 'θ',
+  D: 'ð',
+  i: 'iː',
+  A: 'ɑː',
+};
+
 createApp({
   data() {
     return {
@@ -136,7 +153,13 @@ async function transliterate(text, dictionary) {
     const lower = part.toLowerCase();
 
     if (dictionary[lower]) {
-      return preserveCase(part, dictionary[lower]);
+      let phonetic = dictionary[lower];
+
+      phonetic = asciiToIPA(phonetic);
+
+      console.log('lower phonetic', lower, phonetic);
+
+      return preserveCase(part, phonetic);
     }
 
     return part;
@@ -153,6 +176,31 @@ function preserveCase(original, replacement) {
     return replacement[0].toUpperCase() + replacement.slice(1);
   }
   return replacement;
+}
+
+function asciiToIPA(text) {
+  // for (const key in ipaReplacements) {
+  //   const regex = new RegExp(key, 'g');
+  //   text = text.replace(regex, ipaReplacements[key]);
+  // }
+
+  // return text;
+
+  return text
+    .replace(/&/g, 'æ')
+    .replace(/\./g, 'ˌ')
+    .replace(/U/g, 'ʊ')
+    .replace(/S/g, 'ʃ')
+    .replace(/R/g, 'r')
+    .replace(/O/g, 'ɔː')
+    .replace(/Z/g, 'ʒ')
+    .replace(/V/g, 'ʌ')
+    .replace(/N/g, 'ŋ')
+    .replace(/u/g, 'uː')
+    .replace(/T/g, 'θ')
+    .replace(/D/g, 'ð')
+    .replace(/i/g, 'iː')
+    .replace(/A/g, 'ɑː');
 }
 
 window.transliterate = transliterate;
