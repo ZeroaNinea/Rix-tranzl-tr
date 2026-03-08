@@ -48,6 +48,7 @@ const rixespekReplacements = {
   3: 'r',
   ˌ: '',
   '.': '',
+  ks: 'x',
 };
 
 charsAtWordEnd = {
@@ -118,11 +119,19 @@ function preserveCase(original, replacement) {
 
 function asciiToRixespek(text) {
   for (const key in charsAtWordEnd) {
+    if (text.endsWith('tu')) {
+      continue;
+    }
+
     const regex = new RegExp(escapeRegex(key) + '$', 'i');
     text = text.replace(regex, charsAtWordEnd[key]);
   }
 
   for (const key in rixespekReplacements) {
+    if (text.endsWith('tu')) {
+      continue;
+    }
+
     const regex = new RegExp(escapeRegex(key), 'g');
     text = text.replace(regex, rixespekReplacements[key]);
   }
