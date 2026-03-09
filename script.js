@@ -65,6 +65,7 @@ charsAtWordEnd = {
   aI: 'ī',
   eI: 'ā',
   // I: 'ē',
+  '@': 'ə',
 };
 
 vowels = ['a', 'e', 'i', 'o', 'u', '@', 'I', 'U', 'V'];
