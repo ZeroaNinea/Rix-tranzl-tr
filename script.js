@@ -172,7 +172,7 @@ function asciiToRixespek(text) {
   }
 
   for (const key in charsAtWordEnd) {
-    if (text.endsWith('tu') || text.length <= 2) {
+    if (text.endsWith('tu')) {
       continue;
     }
 
