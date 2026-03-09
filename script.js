@@ -60,12 +60,12 @@ charsAtWordStart = {
 };
 
 charsAtWordEnd = {
+  '@': 'ə',
   '@U': 'ō',
   // U: 'w',
   aI: 'ī',
   eI: 'ā',
   // I: 'ē',
-  '@': 'ə',
 };
 
 vowels = ['a', 'e', 'i', 'o', 'u', '@', 'I', 'U', 'V'];
@@ -172,7 +172,7 @@ function asciiToRixespek(text) {
   }
 
   for (const key in charsAtWordEnd) {
-    if (text.endsWith('tu')) {
+    if (text.endsWith('tu') || text === 'eI') {
       continue;
     }
 
