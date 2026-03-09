@@ -26,6 +26,8 @@ const rixespekReplacements = {
   aI: 'ī',
   '@U': 'ō',
   '&': 'a',
+  ju: 'ū',
+  jU: 'ū',
   U: 'œ',
   S: 'q',
   3: 'r',
@@ -33,7 +35,7 @@ const rixespekReplacements = {
   rr: 'r',
   0: 'o',
   O: 'o',
-  ju: 'ū',
+
   j: 'y',
   dZ: 'j',
   tq: 'c',
