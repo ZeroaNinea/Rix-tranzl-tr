@@ -96,11 +96,8 @@ consonants = [
 ];
 
 vowels.forEach((vowel) => {
-  charsAtWordEnd[vowel + 'U'] = vowel + 'w';
-
-  if (!vowel === 'a') {
-    charsAtWordEnd[vowel + 'I'] = vowel + 'y';
-  }
+  if (vowel !== '@') charsAtWordEnd[vowel + 'U'] = vowel + 'w';
+  charsAtWordEnd[vowel + 'I'] = vowel + 'y';
 });
 
 consonants.forEach((consonant) => {
@@ -172,14 +169,18 @@ function asciiToRixespek(text) {
     text = text.replace(regex, charsAtWordStart[key]);
   }
 
+  console.log('start', text);
+
   for (const key in charsAtWordEnd) {
-    if (text.endsWith('tu')) {
+    if (text.endsWith('tu') || text.length <= 2) {
       continue;
     }
 
     const regex = new RegExp(escapeRegex(key) + '$', 'i');
     text = text.replace(regex, charsAtWordEnd[key]);
   }
+
+  console.log('end', text);
 
   for (const key in rixespekReplacements) {
     if (text.endsWith('tu')) {
