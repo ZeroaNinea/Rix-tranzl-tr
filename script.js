@@ -169,8 +169,6 @@ function asciiToRixespek(text) {
     text = text.replace(regex, charsAtWordStart[key]);
   }
 
-  console.log('start', text);
-
   for (const key in charsAtWordEnd) {
     if (text.endsWith('tu') || text.length <= 2) {
       continue;
@@ -179,8 +177,6 @@ function asciiToRixespek(text) {
     const regex = new RegExp(escapeRegex(key) + '$', 'i');
     text = text.replace(regex, charsAtWordEnd[key]);
   }
-
-  console.log('end', text);
 
   for (const key in rixespekReplacements) {
     if (text.endsWith('tu')) {
