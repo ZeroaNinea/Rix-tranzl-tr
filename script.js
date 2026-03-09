@@ -35,12 +35,12 @@ const rixespekReplacements = {
   rr: 'r',
   0: 'o',
   O: 'o',
-
   j: 'y',
   dZ: 'j',
   tq: 'c',
   Z: 'q',
   N: 'ng',
+  gg: 'g',
   u: 'ł',
   V: 'u',
   T: 'th',
