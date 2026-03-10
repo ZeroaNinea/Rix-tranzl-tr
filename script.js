@@ -23,7 +23,9 @@ const rixespekReplacements = {
   // I: 'iː',
   // 3: '3ː',
   // Rexēspēk
+  aU: 'aw',
   aI: 'ī',
+  eI: 'ā',
   '@U': 'ō',
   '&': 'a',
   ju: 'ū',
@@ -47,7 +49,6 @@ const rixespekReplacements = {
   D: 'th',
   A: 'a',
   i: 'ē',
-  eI: 'ā',
   I: 'i',
   '@': '',
   "'": '',
@@ -209,6 +210,8 @@ async function transliterate(text, dictionary) {
   return parts.map((part) => {
     const lower = part.toLowerCase();
 
+    console.log(lower, dictionary[lower]);
+
     if (dictionary[lower]) {
       const entry = dictionary[lower];
 
@@ -248,7 +251,7 @@ function asciiToRixespek(text) {
   }
 
   for (const key in charsAtWordEnd) {
-    if (text.endsWith('tu') || text === 'eI') {
+    if (text === 'eI') {
       continue;
     }
 
@@ -257,9 +260,9 @@ function asciiToRixespek(text) {
   }
 
   for (const key in rixespekReplacements) {
-    if (text.endsWith('tu')) {
-      continue;
-    }
+    // if (text.endsWith('tu')) {
+    //   continue;
+    // }
 
     const regex = new RegExp(escapeRegex(key), 'g');
     text = text.replace(regex, rixespekReplacements[key]);
