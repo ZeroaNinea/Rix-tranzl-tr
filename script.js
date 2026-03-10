@@ -154,7 +154,7 @@ createApp({
       this.activeWord = token;
 
       const phonetics = token.phonetics.map((p) => asciiToRixespek(p));
-      const cases = token.cases;
+      const cases = [...token.cases];
 
       phonetics.map((phonetic) => {
         const capitalized = phonetic[0].toUpperCase() + phonetic.slice(1);
