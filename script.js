@@ -152,8 +152,16 @@ createApp({
 
       this.activeWord = token;
 
-      this.menuPhonetics = token.phonetics.map((p) => asciiToRixespek(p));
-      this.menuCases = token.cases;
+      const phonetics = token.phonetics.map((p) => asciiToRixespek(p));
+      const cases = token.cases;
+
+      phonetics.map((phonetic) => {
+        cases.push(phonetic[0].toUpperCase() + phonetic.slice(1));
+        cases.push(phonetic.toUpperCase());
+      });
+
+      this.menuPhonetics = phonetics;
+      this.menuCases = cases;
 
       const dropdown = document.getElementById('wordMenu');
 
