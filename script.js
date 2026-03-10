@@ -126,7 +126,12 @@ createApp({
     document.addEventListener('click', (e) => {
       const menu = document.getElementById('wordMenu');
 
-      if (!menu.contains(e.target)) {
+      if (!menu) return;
+
+      const clickedMenu = menu.contains(e.target);
+      const clickedWord = e.target.closest('.word');
+
+      if (!clickedMenu && !clickedWord) {
         this.closeMenu();
       }
     });
@@ -158,7 +163,8 @@ createApp({
     },
 
     choosePhonetic(p) {
-      this.activeWord.value = asciiToRixespek(p);
+      this.activeWord.value = p;
+      this.closeMenu();
     },
 
     chooseCase(c) {
@@ -169,7 +175,10 @@ createApp({
     closeMenu() {
       const dropdown = document.getElementById('wordMenu');
       dropdown.style.display = 'none';
+
       this.activeWord = null;
+      this.menuPhonetics = [];
+      this.menuCases = [];
     },
   },
 }).mount('#app');
