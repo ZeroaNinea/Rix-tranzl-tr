@@ -29,8 +29,45 @@
 
       <button class="btn btn-primary mb-3" @click="convert">Convert</button>
 
-      <div style="white-space: pre-wrap" class="border p-3 text-break rounded">
+      <!-- <div style="white-space: pre-wrap" class="border p-3 text-break rounded">
         {{ output }}
+      </div> -->
+      <div class="border p-3 text-break rounded" style="white-space: pre-wrap">
+        <template v-for="(token, i) in outputTokens" :key="i">
+          <span v-if="token.type === 'text'"> {{ token.value }} </span>
+
+          <span
+            v-else
+            class="word"
+            @click="openOptions(token, $event)"
+            style="cursor: pointer"
+          >
+            {{ token.value }}
+          </span>
+        </template>
+      </div>
+      <div
+        id="wordMenu"
+        class="dropdown-menu show"
+        style="position: absolute; display: none"
+      >
+        <div class="dropdown-header">Phonetics</div>
+
+        <button
+          v-for="p in activeWord?.phonetics"
+          class="dropdown-item"
+          @click="choosePhonetic(p)"
+        >
+          {{ p }}
+        </button>
+
+        <div class="dropdown-divider"></div>
+
+        <div class="dropdown-header">Cases</div>
+
+        <button v-for="c in activeWord?.cases" class="dropdown-item">
+          {{ c }}
+        </button>
       </div>
     </div>
   </body>

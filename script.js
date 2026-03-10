@@ -112,8 +112,9 @@ createApp({
   data() {
     return {
       input: '',
-      output: '',
+      outputTokens: [],
       wordReplacements: {},
+      activeWord: null,
     };
   },
 
@@ -123,7 +124,28 @@ createApp({
 
   methods: {
     async convert() {
-      this.output = await transliterate(this.input, this.wordReplacements);
+      if (!this.wordReplacements) return;
+
+      this.outputTokens = await transliterate(
+        this.input,
+        this.wordReplacements,
+      );
+    },
+
+    openOptions(token, event) {
+      if (token.phonetics.length <= 1 && token.cases.length <= 1) return;
+
+      this.activeWord = token;
+
+      const dropdown = document.getElementById('wordMenu');
+
+      dropdown.style.display = 'block';
+      dropdown.style.left = event.pageX + 'px';
+      dropdown.style.top = event.pageY + 'px';
+    },
+
+    choosePhonetic(p) {
+      this.activeWord.value = asciiToRixespek(p);
     },
   },
 }).mount('#app');
@@ -138,23 +160,29 @@ async function transliterate(text, dictionary) {
   const parts =
     text.match(/[\p{L}\p{M}\p{N}]+|\s+|[^\s\p{L}\p{M}\p{N}]+/gu) || [];
 
-  const result = parts.map((part) => {
+  return parts.map((part) => {
     const lower = part.toLowerCase();
 
     if (dictionary[lower]) {
-      let phonetic = JSON.parse(JSON.stringify(dictionary[lower])).phonetics[0];
+      const entry = dictionary[lower];
 
+      let phonetic = entry.phonetics[0];
       phonetic = asciiToRixespek(phonetic);
 
-      console.log(dictionary[lower], phonetic);
-
-      return preserveCase(part, phonetic);
+      return {
+        type: 'word',
+        original: part,
+        value: preserveCase(part, phonetic),
+        phonetics: entry.phonetics,
+        cases: entry.cases,
+      };
     }
 
-    return part;
+    return {
+      type: 'text',
+      value: part,
+    };
   });
-
-  return result.join('');
 }
 
 function preserveCase(original, replacement) {
