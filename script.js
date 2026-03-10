@@ -156,8 +156,13 @@ createApp({
       const cases = token.cases;
 
       phonetics.map((phonetic) => {
-        cases.push(phonetic[0].toUpperCase() + phonetic.slice(1));
-        cases.push(phonetic.toUpperCase());
+        const capitalized = phonetic[0].toUpperCase() + phonetic.slice(1);
+        const capsLk = phonetic.toUpperCase();
+
+        if (cases.includes(capitalized) || cases.includes(capsLk)) return;
+
+        cases.push(capitalized);
+        cases.push(capsLk);
       });
 
       this.menuPhonetics = phonetics;

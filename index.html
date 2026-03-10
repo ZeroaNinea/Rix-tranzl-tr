@@ -30,8 +30,15 @@
 
       <button class="btn btn-primary mb-3" @click="convert">Convert</button>
 
-      <div class="border p-3 text-break rounded" style="white-space: pre-wrap">
-        <template v-for="(token, i) in outputTokens" :key="i">
+      <div
+        class="border p-3 text-break rounded"
+        style="white-space: pre-wrap; word-spacing: -2px"
+      >
+        <template
+          v-for="(token, i) in outputTokens"
+          :key="i"
+          style="word-spacing: 0px"
+        >
           <span v-if="token.type === 'text'"> {{ token.value }} </span>
           <span
             v-else
