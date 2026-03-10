@@ -10,6 +10,7 @@
       integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
       crossorigin="anonymous"
     />
+    <link rel="stylesheet" href="style.css" />
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
@@ -29,18 +30,14 @@
 
       <button class="btn btn-primary mb-3" @click="convert">Convert</button>
 
-      <!-- <div style="white-space: pre-wrap" class="border p-3 text-break rounded">
-        {{ output }}
-      </div> -->
       <div class="border p-3 text-break rounded" style="white-space: pre-wrap">
         <template v-for="(token, i) in outputTokens" :key="i">
           <span v-if="token.type === 'text'"> {{ token.value }} </span>
-
           <span
             v-else
             class="word"
+            :class="{ 'has-options': token.phonetics.length > 1 || token.cases.length > 1 }"
             @click="openOptions(token, $event)"
-            style="cursor: pointer"
           >
             {{ token.value }}
           </span>
@@ -54,9 +51,9 @@
         <div class="dropdown-header">Phonetics</div>
 
         <button
-          v-for="p in activeWord?.phonetics"
+          v-for="p in menuPhonetics"
           class="dropdown-item"
-          @click="choosePhonetic(p)"
+          @click.stop="choosePhonetic(p)"
         >
           {{ p }}
         </button>
@@ -65,7 +62,11 @@
 
         <div class="dropdown-header">Cases</div>
 
-        <button v-for="c in activeWord?.cases" class="dropdown-item">
+        <button
+          v-for="c in menuCases"
+          class="dropdown-item"
+          @click.stop="chooseCase(c)"
+        >
           {{ c }}
         </button>
       </div>

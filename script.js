@@ -115,11 +115,21 @@ createApp({
       outputTokens: [],
       wordReplacements: {},
       activeWord: null,
+      menuPhonetics: [],
+      menuCases: [],
     };
   },
 
   async mounted() {
     this.wordReplacements = await loadWordReplacements();
+
+    document.addEventListener('click', (e) => {
+      const menu = document.getElementById('wordMenu');
+
+      if (!menu.contains(e.target)) {
+        this.closeMenu();
+      }
+    });
   },
 
   methods: {
@@ -137,6 +147,9 @@ createApp({
 
       this.activeWord = token;
 
+      this.menuPhonetics = token.phonetics.map((p) => asciiToRixespek(p));
+      this.menuCases = token.cases;
+
       const dropdown = document.getElementById('wordMenu');
 
       dropdown.style.display = 'block';
@@ -146,6 +159,17 @@ createApp({
 
     choosePhonetic(p) {
       this.activeWord.value = asciiToRixespek(p);
+    },
+
+    chooseCase(c) {
+      this.activeWord.value = c;
+      this.closeMenu();
+    },
+
+    closeMenu() {
+      const dropdown = document.getElementById('wordMenu');
+      dropdown.style.display = 'none';
+      this.activeWord = null;
     },
   },
 }).mount('#app');
