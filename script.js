@@ -142,7 +142,7 @@ async function transliterate(text, dictionary) {
     const lower = part.toLowerCase();
 
     if (dictionary[lower]) {
-      let phonetic = dictionary[lower];
+      let phonetic = JSON.parse(JSON.stringify(dictionary[lower])).phonetics[0];
 
       phonetic = asciiToRixespek(phonetic);
 
