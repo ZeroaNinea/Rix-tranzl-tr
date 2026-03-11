@@ -102,7 +102,7 @@ consonants = [
 
 vowels.forEach((vowel) => {
   if (vowel !== '@') charsAtWordEnd[vowel + 'U'] = vowel + 'w';
-  if (vowel !== 'a') charsAtWordEnd[vowel + 'I'] = vowel + 'y';
+  if (vowel !== 'a' && vowel !== 'e') charsAtWordEnd[vowel + 'I'] = vowel + 'y';
 });
 
 consonants.forEach((consonant) => {
@@ -256,9 +256,9 @@ function asciiToRixespek(text) {
   }
 
   for (const key in charsAtWordEnd) {
-    if (text === 'eI') {
-      continue;
-    }
+    // if (text === 'eI') {
+    //   continue;
+    // }
 
     const regex = new RegExp(escapeRegex(key) + '$', 'i');
     text = text.replace(regex, charsAtWordEnd[key]);
