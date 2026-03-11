@@ -204,6 +204,8 @@ async function loadWordReplacements() {
 }
 
 async function transliterate(text, dictionary) {
+  text = text.replace(/([A-Za-z])`([A-Za-z])/g, "$1'$2");
+
   const parts = text.match(/[A-Za-z]+(?:'[A-Za-z]+)*|\s+|[^A-Za-z\s]+/g) || [];
 
   return parts.map((part) => {
@@ -218,6 +220,8 @@ async function transliterate(text, dictionary) {
 
       let phonetic = entry.phonetics[0];
       phonetic = asciiToRixespek(phonetic);
+
+      console.log(part, dictionary[lower]);
 
       return {
         type: 'word',
