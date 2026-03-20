@@ -142,10 +142,11 @@ createApp({
     async convert() {
       if (!this.wordReplacements) return;
 
-      this.outputTokens = await transliterate(
-        this.input,
-        this.wordReplacements,
-      );
+      let tokens = await transliterate(this.input, this.wordReplacements);
+
+      tokens = applyRixespekPunctuation(tokens);
+
+      this.outputTokens = tokens;
     },
 
     openOptions(token, event) {
@@ -296,6 +297,46 @@ function splitSentences(tokens) {
   if (current.length) sentences.push(current);
 
   return sentences;
+}
+
+function applyRixespekPunctuation(tokens) {
+  const sentences = splitSentences(tokens);
+
+  if (sentences.length === 1) {
+    return tokens.filter((t) => !(t.type === 'text' && /[.,]/.test(t.value)));
+  }
+
+  const result = [];
+
+  for (const sentence of sentences) {
+    let mark = null;
+
+    for (const token of sentence) {
+      if (
+        token.type === 'text' &&
+        (token.value.includes('!') || token.value.includes('?'))
+      ) {
+        mark = token.value;
+        break;
+      }
+    }
+
+    const cleaned = sentence.filter(
+      (t) =>
+        !(
+          t.type === 'text' &&
+          (t.value.includes('!') || t.value.includes('?'))
+        ),
+    );
+
+    if (mark) {
+      result.push({ type: 'text', value: mark });
+    }
+
+    result.push(...cleaned);
+  }
+
+  return result;
 }
 
 window.transliterate = transliterate;
