@@ -280,4 +280,22 @@ function escapeRegex(str) {
   return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
+function splitSentences(tokens) {
+  const sentences = [];
+  let current = [];
+
+  for (const token of tokens) {
+    current.push(token);
+
+    if (token.type === 'text' && /[.!?]/.test(token.value)) {
+      sentences.push(current);
+      current = [];
+    }
+  }
+
+  if (current.length) sentences.push(current);
+
+  return sentences;
+}
+
 window.transliterate = transliterate;
