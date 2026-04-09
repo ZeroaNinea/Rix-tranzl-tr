@@ -1,14 +1,6 @@
 .word {
   position: relative;
-  /* padding-left: 2px; */
-  /* padding-right: 2px; */
 }
-
-/* .word.has-options:hover {
-  background-color: #eef3ff;
-  border-radius: 4px;
-  cursor: pointer;
-} */
 
 .word.has-options {
   cursor: pointer;
