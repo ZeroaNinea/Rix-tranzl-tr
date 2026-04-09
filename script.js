@@ -151,6 +151,7 @@ createApp({
     },
 
     openOptions(token, event) {
+      if (token.type !== 'word') return;
       if (token.phonetics.length <= 1 && token.cases.length <= 1) return;
 
       this.activeWord = token;
@@ -170,6 +171,19 @@ createApp({
 
       this.menuPhonetics = phonetics;
       this.menuCases = cases;
+
+      const dropdown = document.getElementById('wordMenu');
+
+      dropdown.style.display = 'block';
+      dropdown.style.left = event.pageX + 'px';
+      dropdown.style.top = event.pageY + 'px';
+    },
+
+    openErrorOptions(token, event) {
+      this.activeWord = token;
+
+      this.menuPhonetics = []; // no phonetics
+      this.menuCases = token.suggestions; // reuse UI
 
       const dropdown = document.getElementById('wordMenu');
 
@@ -394,6 +408,7 @@ function getSuggestions(word, dictionary) {
   const results = [];
 
   for (const key in dictionary) {
+    console.log(key, word);
     const dist = levenshtein(word, key);
 
     if (dist <= 2) {

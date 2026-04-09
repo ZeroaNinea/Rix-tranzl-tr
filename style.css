@@ -2,8 +2,24 @@
   position: relative;
 }
 
+.word.unknown {
+  text-decoration: underline dotted var(--bs-danger);
+}
+
 .word.has-options {
   cursor: pointer;
+}
+
+.word.unknown.has-options:hover::before {
+  content: '';
+  position: absolute;
+  left: -3px;
+  top: -2px;
+  width: calc(100% + 6px);
+  height: calc(1rem + 4px);
+  background-color: var(--bs-danger-bg-subtle);
+  border-radius: 4px;
+  z-index: -1;
 }
 
 .word.has-options:hover::before {
