@@ -422,21 +422,29 @@ function getSuggestions(word, dictionary) {
     }
   }
 
-  // return results
-  //   .sort((a, b) => a.dist - b.dist)
-  //   .slice(0, 5)
-  //   .map((r) => r.word);
-
   return results
     .sort((a, b) => a.dist - b.dist)
     .slice(0, 5)
     .map((r) => {
       const entry = dictionary[r.word];
 
+      const cases = entry.cases || [];
+      const phonetics = (entry.phonetics || []).map((p) => asciiToRixespek(p));
+
+      cases.map((c) => {
+        entry.cases.push(c.toUpperCase());
+        entry.cases.push(c[0].toUpperCase() + c.slice(1));
+      });
+
+      phonetics.map((p) => {
+        phonetics.push(p.toUpperCase());
+        phonetics.push(p[0].toUpperCase() + p.slice(1));
+      });
+
       return {
         word: r.word,
         cases: entry.cases || [],
-        phonetics: (entry.phonetics || []).map((p) => asciiToRixespek(p)),
+        phonetics: phonetics || [],
       };
     });
 }
