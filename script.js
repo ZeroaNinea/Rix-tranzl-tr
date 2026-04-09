@@ -144,7 +144,6 @@ createApp({
 
       let tokens = await transliterate(this.input, this.wordReplacements);
 
-      // tokens = normalizePunctuation(tokens);
       tokens = applyRixespekPunctuation(tokens);
 
       this.outputTokens = tokens;
@@ -330,22 +329,6 @@ function splitSentences(tokens) {
   return sentences;
 }
 
-// function normalizePunctuation(tokens) {
-//   const result = [];
-
-//   for (const token of tokens) {
-//     if (token.type === 'text' && /[.!?,!?]+/.test(token.value)) {
-//       for (const char of token.value) {
-//         result.push({ type: 'text', value: char });
-//       }
-//     } else {
-//       result.push(token);
-//     }
-//   }
-
-//   return result;
-// }
-
 function applyRixespekPunctuation(tokens) {
   const sentences = splitSentences(tokens);
 
@@ -432,13 +415,17 @@ function getSuggestions(word, dictionary) {
       const phonetics = (entry.phonetics || []).map((p) => asciiToRixespek(p));
 
       cases.map((c) => {
-        entry.cases.push(c.toUpperCase());
-        entry.cases.push(c[0].toUpperCase() + c.slice(1));
+        if (!entry.cases.includes(c.toUpperCase()))
+          entry.cases.push(c.toUpperCase());
+        if (!entry.cases.includes(c[0].toUpperCase() + c.slice(1)))
+          entry.cases.push(c[0].toUpperCase() + c.slice(1));
       });
 
       phonetics.map((p) => {
-        phonetics.push(p.toUpperCase());
-        phonetics.push(p[0].toUpperCase() + p.slice(1));
+        if (!phonetics.includes(p.toUpperCase()))
+          phonetics.push(p.toUpperCase());
+        if (!phonetics.includes(p[0].toUpperCase() + p.slice(1)))
+          phonetics.push(p[0].toUpperCase() + p.slice(1));
       });
 
       return {
