@@ -1,10 +1,27 @@
 .word {
-  padding-left: 2px;
-  padding-right: 2px;
+  position: relative;
+  /* padding-left: 2px; */
+  /* padding-right: 2px; */
 }
 
-.word.has-options:hover {
+/* .word.has-options:hover {
   background-color: #eef3ff;
   border-radius: 4px;
   cursor: pointer;
+} */
+
+.word.has-options {
+  cursor: pointer;
+}
+
+.word.has-options:hover::before {
+  content: '';
+  position: absolute;
+  left: -3px;
+  top: -2px;
+  width: calc(100% + 6px);
+  height: calc(1rem + 4px);
+  background-color: #eef3ff;
+  border-radius: 4px;
+  z-index: -1;
 }
