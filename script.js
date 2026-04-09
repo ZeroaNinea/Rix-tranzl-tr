@@ -232,6 +232,15 @@ async function transliterate(text, dictionary) {
         phonetics: entry.phonetics,
         cases: entry.cases,
       };
+    } else if (/^[A-Za-z]+$/.test(part)) {
+      const suggestions = getSuggestions(lower, dictionary);
+
+      return {
+        type: 'unknown',
+        original: part,
+        value: part,
+        suggestions,
+      };
     }
 
     return {
@@ -300,21 +309,21 @@ function splitSentences(tokens) {
   return sentences;
 }
 
-function normalizePunctuation(tokens) {
-  const result = [];
+// function normalizePunctuation(tokens) {
+//   const result = [];
 
-  for (const token of tokens) {
-    if (token.type === 'text' && /[.!?,!?]+/.test(token.value)) {
-      for (const char of token.value) {
-        result.push({ type: 'text', value: char });
-      }
-    } else {
-      result.push(token);
-    }
-  }
+//   for (const token of tokens) {
+//     if (token.type === 'text' && /[.!?,!?]+/.test(token.value)) {
+//       for (const char of token.value) {
+//         result.push({ type: 'text', value: char });
+//       }
+//     } else {
+//       result.push(token);
+//     }
+//   }
 
-  return result;
-}
+//   return result;
+// }
 
 function applyRixespekPunctuation(tokens) {
   const sentences = splitSentences(tokens);
@@ -356,6 +365,46 @@ function applyRixespekPunctuation(tokens) {
   }
 
   return result;
+}
+
+function levenshtein(a, b) {
+  const dp = Array.from({ length: a.length + 1 }, () =>
+    Array(b.length + 1).fill(0),
+  );
+
+  for (let i = 0; i <= a.length; i++) dp[i][0] = i;
+  for (let j = 0; j <= b.length; j++) dp[0][j] = j;
+
+  for (let i = 1; i <= a.length; i++) {
+    for (let j = 1; j <= b.length; j++) {
+      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+
+      dp[i][j] = Math.min(
+        dp[i - 1][j] + 1,
+        dp[i][j - 1] + 1,
+        dp[i - 1][j - 1] + cost,
+      );
+    }
+  }
+
+  return dp[a.length][b.length];
+}
+
+function getSuggestions(word, dictionary) {
+  const results = [];
+
+  for (const key in dictionary) {
+    const dist = levenshtein(word, key);
+
+    if (dist <= 2) {
+      results.push({ word: key, dist });
+    }
+  }
+
+  return results
+    .sort((a, b) => a.dist - b.dist)
+    .slice(0, 5)
+    .map((r) => r.word);
 }
 
 window.transliterate = transliterate;
