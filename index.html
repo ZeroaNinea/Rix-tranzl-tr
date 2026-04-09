@@ -37,14 +37,6 @@
           style="word-spacing: 0px"
         >
           <span v-if="token.type === 'text'"> {{ token.value }} </span>
-          <!-- <span
-            v-else
-            class="word"
-            :class="{ 'has-options': token.phonetics.length > 1 || token.cases.length > 1 }"
-            @click="openOptions(token, $event)"
-          >
-            {{ token.value }}
-          </span> -->
           <span
             v-else-if="token.type === 'word'"
             class="word"

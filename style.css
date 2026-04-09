@@ -1,3 +1,8 @@
+:root {
+  color-scheme: light dark;
+  --word-suggetions-bg: light-dark(#eef3ff, #212529);
+}
+
 .word {
   position: relative;
 }
@@ -29,7 +34,8 @@
   top: -2px;
   width: calc(100% + 6px);
   height: calc(1rem + 4px);
-  background-color: #eef3ff;
+  /* background-color: #eef3ff; */
+  background-color: var(--word-suggetions-bg);
   border-radius: 4px;
   z-index: -1;
 }
