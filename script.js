@@ -183,9 +183,15 @@ createApp({
       this.activeWord = token;
 
       this.menuPhonetics = [];
-      this.menuCases = token.suggestions;
+      this.menuCases = [];
+
+      token.suggestions.forEach((s) => {
+        this.menuCases.push(...s.cases);
+        this.menuPhonetics.push(...s.phonetics);
+      });
 
       const dropdown = document.getElementById('wordMenu');
+
       dropdown.style.display = 'block';
       dropdown.style.left = event.pageX + 'px';
       dropdown.style.top = event.pageY + 'px';
@@ -409,7 +415,6 @@ function getSuggestions(word, dictionary) {
   const results = [];
 
   for (const key in dictionary) {
-    console.log(key, word);
     const dist = levenshtein(word, key);
 
     if (dist <= 2) {
@@ -417,10 +422,23 @@ function getSuggestions(word, dictionary) {
     }
   }
 
+  // return results
+  //   .sort((a, b) => a.dist - b.dist)
+  //   .slice(0, 5)
+  //   .map((r) => r.word);
+
   return results
     .sort((a, b) => a.dist - b.dist)
     .slice(0, 5)
-    .map((r) => r.word);
+    .map((r) => {
+      const entry = dictionary[r.word];
+
+      return {
+        word: r.word,
+        cases: entry.cases || [],
+        phonetics: (entry.phonetics || []).map((p) => asciiToRixespek(p)),
+      };
+    });
 }
 
 window.transliterate = transliterate;
