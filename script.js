@@ -144,6 +144,7 @@ createApp({
 
       let tokens = await transliterate(this.input, this.wordReplacements);
 
+      // tokens = normalizePunctuation(tokens);
       tokens = applyRixespekPunctuation(tokens);
 
       this.outputTokens = tokens;
@@ -299,12 +300,26 @@ function splitSentences(tokens) {
   return sentences;
 }
 
+function normalizePunctuation(tokens) {
+  const result = [];
+
+  for (const token of tokens) {
+    if (token.type === 'text' && /[.!?,!?]+/.test(token.value)) {
+      for (const char of token.value) {
+        result.push({ type: 'text', value: char });
+      }
+    } else {
+      result.push(token);
+    }
+  }
+
+  return result;
+}
+
 function applyRixespekPunctuation(tokens) {
   const sentences = splitSentences(tokens);
 
-  if (sentences.length === 1) {
-    return tokens.filter((t) => !(t.type === 'text' && /[.,]/.test(t.value)));
-  }
+  const isSingleSentence = sentences.length === 1;
 
   const result = [];
 
@@ -314,20 +329,24 @@ function applyRixespekPunctuation(tokens) {
     for (const token of sentence) {
       if (
         token.type === 'text' &&
-        (token.value.includes('!') || token.value.includes('?'))
+        (token.value === '!' || token.value === '?')
       ) {
         mark = token.value;
         break;
       }
     }
 
-    const cleaned = sentence.filter(
-      (t) =>
-        !(
-          t.type === 'text' &&
-          (t.value.includes('!') || t.value.includes('?'))
-        ),
-    );
+    const cleaned = sentence.filter((t) => {
+      if (t.type !== 'text') return true;
+
+      if (t.value === '!' || t.value === '?') return false;
+
+      if (isSingleSentence && (t.value === '.' || t.value === ',')) {
+        return false;
+      }
+
+      return true;
+    });
 
     if (mark) {
       result.push({ type: 'text', value: mark });
