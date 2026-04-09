@@ -182,11 +182,10 @@ createApp({
     openErrorOptions(token, event) {
       this.activeWord = token;
 
-      this.menuPhonetics = []; // no phonetics
-      this.menuCases = token.suggestions; // reuse UI
+      this.menuPhonetics = [];
+      this.menuCases = token.suggestions;
 
       const dropdown = document.getElementById('wordMenu');
-
       dropdown.style.display = 'block';
       dropdown.style.left = event.pageX + 'px';
       dropdown.style.top = event.pageY + 'px';
