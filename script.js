@@ -254,6 +254,8 @@ async function transliterate(text, dictionary) {
         original: part,
         value: part,
         suggestions,
+        phonetics: [],
+        cases: [],
       };
     }
 
