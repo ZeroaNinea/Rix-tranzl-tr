@@ -267,18 +267,18 @@ async function transliterate(text, dictionary) {
     if (dictionary[lower]) {
       const entry = dictionary[lower];
 
-      let output =
+      let defaultOption =
         alphabet.includes(part.toLowerCase()) && part.toLowerCase() !== 'a'
           ? part
           : entry.phonetics[0];
-      output = asciiToRixespek(output);
+      defaultOption = asciiToRixespek(defaultOption);
 
       console.log(part, dictionary[lower]);
 
       return {
         type: 'word',
         original: part,
-        value: preserveCase(part, output),
+        value: preserveCase(part, defaultOption),
         phonetics: entry.phonetics,
         cases: entry.cases,
       };
