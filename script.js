@@ -454,10 +454,10 @@ function getSuggestions(word, dictionary) {
       });
 
       phonetics.map((p) => {
-        if (!phonetics.includes(p.toUpperCase()))
-          phonetics.push(p.toUpperCase());
-        if (!phonetics.includes(p[0].toUpperCase() + p.slice(1)))
-          phonetics.push(p[0].toUpperCase() + p.slice(1));
+        if (!entry.cases.includes(p.toUpperCase()))
+          entry.cases.push(p.toUpperCase());
+        if (!entry.cases.includes(p[0].toUpperCase() + p.slice(1)))
+          entry.cases.push(p[0].toUpperCase() + p.slice(1));
       });
 
       return {
