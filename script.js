@@ -100,6 +100,35 @@ consonants = [
   'D',
 ];
 
+const alphabet = [
+  'a',
+  'b',
+  'c',
+  'd',
+  'e',
+  'f',
+  'g',
+  'h',
+  'i',
+  'j',
+  'k',
+  'l',
+  'm',
+  'n',
+  'o',
+  'p',
+  'q',
+  'r',
+  's',
+  't',
+  'u',
+  'v',
+  'w',
+  'x',
+  'y',
+  'z',
+];
+
 vowels.forEach((vowel) => {
   if (vowel !== '@') charsAtWordEnd[vowel + 'U'] = vowel + 'w';
   if (vowel !== 'a' && vowel !== 'e') charsAtWordEnd[vowel + 'I'] = vowel + 'y';
@@ -238,15 +267,18 @@ async function transliterate(text, dictionary) {
     if (dictionary[lower]) {
       const entry = dictionary[lower];
 
-      let phonetic = entry.phonetics[0];
-      phonetic = asciiToRixespek(phonetic);
+      let output =
+        alphabet.includes(part.toLowerCase()) && part.toLowerCase() !== 'a'
+          ? part
+          : entry.phonetics[0];
+      output = asciiToRixespek(output);
 
       console.log(part, dictionary[lower]);
 
       return {
         type: 'word',
         original: part,
-        value: preserveCase(part, phonetic),
+        value: preserveCase(part, output),
         phonetics: entry.phonetics,
         cases: entry.cases,
       };
