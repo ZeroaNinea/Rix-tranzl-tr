@@ -268,7 +268,9 @@ async function transliterate(text, dictionary) {
       const entry = dictionary[lower];
 
       let defaultOption =
-        alphabet.includes(part.toLowerCase()) && part.toLowerCase() !== 'a'
+        alphabet.includes(part.toLowerCase()) &&
+        part.toLowerCase() !== 'a' &&
+        part.toLowerCase() !== 'i'
           ? part
           : entry.phonetics[0];
       defaultOption = asciiToRixespek(defaultOption);
