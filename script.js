@@ -58,11 +58,11 @@ const rixespekReplacements = {
   ə: 'u',
 };
 
-charsAtWordStart = {
+const charsAtWordStart = {
   '@': 'ə',
 };
 
-charsAtWordEnd = {
+const charsAtWordEnd = {
   '@': 'ə',
   '@U': 'ō',
   // U: 'w',
@@ -71,8 +71,8 @@ charsAtWordEnd = {
   // I: 'ē',
 };
 
-vowels = ['a', 'e', 'i', 'o', 'u', '@', 'I', 'U', 'V'];
-consonants = [
+const vowels = ['a', 'e', 'i', 'o', 'u', '@', 'I', 'U', 'V'];
+const consonants = [
   'b',
   'c',
   'd',
@@ -247,7 +247,7 @@ createApp({
 }).mount('#app');
 
 async function loadWordReplacements() {
-  const res = await fetch('dictionary/English-phonetic-transcription.json');
+  const res = await fetch('dictionary/English-to-Rixespek.json');
   const data = await res.json();
   return data;
 }
