@@ -143,16 +143,25 @@ createApp({
     return {
       input: '',
       outputTokens: [],
-      wordReplacements: {},
+      // wordReplacements: {},
+      enToRix: {},
+      rixToEn: {},
+      toRixespek: true,
       activeWord: null,
       menuPhonetics: [],
       menuCases: [],
-      toRixespek: false,
     };
   },
 
   async mounted() {
-    this.wordReplacements = await loadWordReplacements();
+    this.enToRix = await fetch('dictionary/English-to-Rixespek.json').then(
+      (r) => r.json(),
+    );
+    this.rixToEn = await fetch('dictionary/Rixespek-to-English.json').then(
+      (r) => r.json(),
+    );
+
+    // this.wordReplacements = this.toRixespek ? this.enToRix : this.rixToEn;
 
     document.addEventListener('click', (e) => {
       const menu = document.getElementById('wordMenu');
@@ -170,11 +179,21 @@ createApp({
 
   methods: {
     async convert() {
-      if (!this.wordReplacements) return;
+      // if (!this.wordReplacements) return;
+      if (!this.enToRix || !this.rixToEn) return;
 
-      let tokens = await transliterate(this.input, this.wordReplacements);
+      // let tokens = await transliterate(this.input, this.wordReplacements);
+      // tokens = applyRixespekPunctuation(tokens);
 
-      tokens = applyRixespekPunctuation(tokens);
+      let tokens;
+
+      if (this.toRixespek) {
+        tokens = await transliterate(this.input, this.enToRix);
+        tokens = applyRixespekPunctuation(tokens);
+      } else {
+        tokens = await transliterate(this.input, this.rixToEn);
+        // tokens = applyEnglishPunctuation(tokens);
+      }
 
       this.outputTokens = tokens;
     },
@@ -247,11 +266,11 @@ createApp({
   },
 }).mount('#app');
 
-async function loadWordReplacements() {
-  const res = await fetch('dictionary/English-to-Rixespek.json');
-  const data = await res.json();
-  return data;
-}
+// async function loadWordReplacements() {
+//   const res = await fetch('dictionary/English-to-Rixespek.json');
+//   const data = await res.json();
+//   return data;
+// }
 
 async function transliterate(text, dictionary) {
   text = text.replace(/([A-Za-z])`([A-Za-z])/g, "$1'$2");
