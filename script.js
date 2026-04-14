@@ -185,6 +185,7 @@ createApp({
         tokens = applyRixespekPunctuation(tokens);
       } else {
         tokens = await reverseTransliterate(this.input, this.rixToEn);
+        console.log(tokens);
       }
 
       this.outputTokens = tokens;
