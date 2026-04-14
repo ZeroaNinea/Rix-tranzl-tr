@@ -327,40 +327,40 @@ async function transliterate(text, dictionary) {
 }
 
 async function reverseTransliterate(text, dictionary) {
-  console.log('reverse transliterate called');
-  const parts = text.match(/[A-Za-z]+(?:'[A-Za-z]+)*|\s+|[^A-Za-z\s]+/g) || [];
+  const parts =
+    text.match(/[\p{L}\p{M}\p{N}]+|\s+|[^\s\p{L}\p{M}\p{N}]+/gu) || [];
 
   return parts.map((part) => {
-    if (part === "'" || part === '’') {
-      return { type: 'text', value: part };
-    }
+    // const key = normalizeRix(part);
+    const key = part.toLowerCase();
 
-    const lower = part.toLowerCase();
+    if (dictionary[key]) {
+      const entry = dictionary[key];
 
-    if (dictionary[lower]) {
-      const entry = dictionary[lower];
-
-      let defaultOption =
-        alphabet.includes(part.toLowerCase()) &&
-        part.toLowerCase() !== 'a' &&
-        part.toLowerCase() !== 'i'
-          ? part
-          : entry.phonetics[0];
-      defaultOption = asciiToRixespek(defaultOption);
+      const best = entry.words[0];
 
       return {
         type: 'word',
         original: part,
-        value: preserveCase(part, defaultOption),
+        value: preserveCase(part, best.value),
+
+        // 👇 reuse UI
+        cases: entry.words.map((w) => w.value),
         phonetics: entry.phonetics,
-        cases: entry.cases,
       };
     }
 
-    return {
-      type: 'text',
-      value: part,
-    };
+    if (/^[\p{L}]+$/u.test(part)) {
+      return {
+        type: 'unknown',
+        value: part,
+        suggestions: [],
+        phonetics: [],
+        cases: [],
+      };
+    }
+
+    return { type: 'text', value: part };
   });
 }
 
