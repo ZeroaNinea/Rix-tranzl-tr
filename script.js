@@ -333,10 +333,12 @@ async function reverseTransliterate(text, dictionary) {
     }
 
     if (/^[\p{L}]+$/u.test(part)) {
+      const suggestions = getSuggestions(key, dictionary);
+
       return {
         type: 'unknown',
         value: part,
-        suggestions: [],
+        suggestions: suggestions,
         phonetics: [],
         cases: [],
       };
@@ -487,8 +489,44 @@ function getSuggestions(word, dictionary) {
     .map((r) => {
       const entry = dictionary[r.word];
 
-      const cases = entry.cases || [];
+      console.log('entry', entry);
+
+      const cases = entry?.cases || entry?.words || [];
       const phonetics = (entry.phonetics || []).map((p) => asciiToRixespek(p));
+
+      console.log('cases', cases[0].value);
+
+      if (Array.isArray(cases) && cases.every((c) => typeof c === 'object')) {
+        cases.map((c, i) => {
+          if (!(cases[i].value === c.value.toUpperCase()))
+            cases.push({
+              value: c.value.toUpperCase(),
+              frequency: cases[i].frequency,
+            });
+          if (!(cases[i].value === c.value[0].toUpperCase() + c.value.slice(1)))
+            cases.push({
+              value: c.value[0].toUpperCase() + c.value.slice(1),
+              frequency: cases[i].frequency,
+            });
+        });
+
+        phonetics.map((p, i) => {
+          console.log('p', p);
+          if (!(cases[i].value === p.toUpperCase()))
+            cases.push({ value: p.toUpperCase(), frequency: 0 });
+          if (!(cases[i].value === p[0].toUpperCase() + p.slice(1)))
+            cases.push({
+              value: p[0].toUpperCase() + p.slice(1),
+              frequency: 0,
+            });
+        });
+
+        return {
+          word: r.word,
+          cases: cases.map((c) => c.value) || [],
+          phonetics: phonetics || [],
+        };
+      }
 
       cases.map((c) => {
         if (!entry.cases.includes(c.toUpperCase()))
@@ -506,7 +544,7 @@ function getSuggestions(word, dictionary) {
 
       return {
         word: r.word,
-        cases: entry.cases || [],
+        cases: cases || [],
         phonetics: phonetics || [],
       };
     });
