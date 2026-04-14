@@ -36,12 +36,15 @@
             role="button"
             class="form-check-input"
             id="flexSwitchCheckDefault"
+            v-model="toRixespek"
           />
           <label
             role="button"
             class="form-check-label text-muted user-select-none"
+            :class="{'fade-in-left': toRixespek, 'fade-in-right': !toRixespek}"
             for="flexSwitchCheckDefault"
-            >English to Rixēspēk</label
+            ><span v-if="toRixespek">Rixēspēk to English</span
+            ><span v-else>English to Rixēspēk</span></label
           >
         </div>
       </div>

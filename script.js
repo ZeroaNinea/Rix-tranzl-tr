@@ -147,6 +147,7 @@ createApp({
       activeWord: null,
       menuPhonetics: [],
       menuCases: [],
+      toRixespek: false,
     };
   },
 
