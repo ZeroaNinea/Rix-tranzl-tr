@@ -143,7 +143,6 @@ createApp({
     return {
       input: '',
       outputTokens: [],
-      // wordReplacements: {},
       enToRix: {},
       rixToEn: {},
       toRixespek: true,
@@ -161,8 +160,6 @@ createApp({
       (r) => r.json(),
     );
 
-    // this.wordReplacements = this.toRixespek ? this.enToRix : this.rixToEn;
-
     document.addEventListener('click', (e) => {
       const menu = document.getElementById('wordMenu');
 
@@ -179,11 +176,7 @@ createApp({
 
   methods: {
     async convert() {
-      // if (!this.wordReplacements) return;
       if (!this.enToRix || !this.rixToEn) return;
-
-      // let tokens = await transliterate(this.input, this.wordReplacements);
-      // tokens = applyRixespekPunctuation(tokens);
 
       let tokens;
 
@@ -192,9 +185,6 @@ createApp({
         tokens = applyRixespekPunctuation(tokens);
       } else {
         tokens = await reverseTransliterate(this.input, this.rixToEn);
-        console.log(tokens);
-        // tokens = await transliterate(this.input, this.rixToEn);
-        // tokens = applyEnglishPunctuation(tokens);
       }
 
       this.outputTokens = tokens;
@@ -268,12 +258,6 @@ createApp({
   },
 }).mount('#app');
 
-// async function loadWordReplacements() {
-//   const res = await fetch('dictionary/English-to-Rixespek.json');
-//   const data = await res.json();
-//   return data;
-// }
-
 async function transliterate(text, dictionary) {
   text = text.replace(/([A-Za-z])`([A-Za-z])/g, "$1'$2");
 
@@ -331,7 +315,6 @@ async function reverseTransliterate(text, dictionary) {
     text.match(/[\p{L}\p{M}\p{N}]+|\s+|[^\s\p{L}\p{M}\p{N}]+/gu) || [];
 
   return parts.map((part) => {
-    // const key = normalizeRix(part);
     const key = part.toLowerCase();
 
     if (dictionary[key]) {
@@ -343,8 +326,6 @@ async function reverseTransliterate(text, dictionary) {
         type: 'word',
         original: part,
         value: preserveCase(part, best.value),
-
-        // 👇 reuse UI
         cases: entry.words.map((w) => w.value),
         phonetics: entry.phonetics,
       };
@@ -529,5 +510,3 @@ function getSuggestions(word, dictionary) {
       };
     });
 }
-
-// window.transliterate = transliterate;
