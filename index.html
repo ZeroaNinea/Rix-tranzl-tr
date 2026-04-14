@@ -28,7 +28,23 @@
 
       <textarea class="form-control mb-3" rows="8" v-model="input"></textarea>
 
-      <button class="btn btn-primary mb-3" @click="convert">Convert</button>
+      <div class="d-flex flex-row align-items-baseline gap-3">
+        <button class="btn btn-primary mb-3" @click="convert">Convert</button>
+        <div class="form-check form-switch">
+          <input
+            type="checkbox"
+            role="button"
+            class="form-check-input"
+            id="flexSwitchCheckDefault"
+          />
+          <label
+            role="button"
+            class="form-check-label text-muted user-select-none"
+            for="flexSwitchCheckDefault"
+            >English to Rixespek</label
+          >
+        </div>
+      </div>
 
       <div class="border p-3 text-break rounded" style="white-space: pre-wrap">
         <template
