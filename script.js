@@ -191,7 +191,9 @@ createApp({
         tokens = await transliterate(this.input, this.enToRix);
         tokens = applyRixespekPunctuation(tokens);
       } else {
-        tokens = await transliterate(this.input, this.rixToEn);
+        tokens = await reverseTransliterate(this.input, this.rixToEn);
+        console.log(tokens);
+        // tokens = await transliterate(this.input, this.rixToEn);
         // tokens = applyEnglishPunctuation(tokens);
       }
 
@@ -314,6 +316,44 @@ async function transliterate(text, dictionary) {
         suggestions,
         phonetics: [],
         cases: [],
+      };
+    }
+
+    return {
+      type: 'text',
+      value: part,
+    };
+  });
+}
+
+async function reverseTransliterate(text, dictionary) {
+  console.log('reverse transliterate called');
+  const parts = text.match(/[A-Za-z]+(?:'[A-Za-z]+)*|\s+|[^A-Za-z\s]+/g) || [];
+
+  return parts.map((part) => {
+    if (part === "'" || part === '’') {
+      return { type: 'text', value: part };
+    }
+
+    const lower = part.toLowerCase();
+
+    if (dictionary[lower]) {
+      const entry = dictionary[lower];
+
+      let defaultOption =
+        alphabet.includes(part.toLowerCase()) &&
+        part.toLowerCase() !== 'a' &&
+        part.toLowerCase() !== 'i'
+          ? part
+          : entry.phonetics[0];
+      defaultOption = asciiToRixespek(defaultOption);
+
+      return {
+        type: 'word',
+        original: part,
+        value: preserveCase(part, defaultOption),
+        phonetics: entry.phonetics,
+        cases: entry.cases,
       };
     }
 
