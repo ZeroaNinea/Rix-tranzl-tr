@@ -530,4 +530,4 @@ function getSuggestions(word, dictionary) {
     });
 }
 
-window.transliterate = transliterate;
+// window.transliterate = transliterate;
