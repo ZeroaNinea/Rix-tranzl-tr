@@ -182,9 +182,11 @@ createApp({
 
       if (this.toRixespek) {
         tokens = await transliterate(this.input, this.enToRix);
+        tokens = normalizePunctuation(tokens);
         tokens = applyRixespekPunctuation(tokens);
       } else {
         tokens = await reverseTransliterate(this.input, this.rixToEn);
+        tokens = normalizePunctuation(tokens);
         tokens = applyEnglishPunctuation(tokens);
         tokens = capitalizeSentence(tokens);
         // console.log(tokens);
@@ -261,10 +263,28 @@ createApp({
   },
 }).mount('#app');
 
+function normalizePunctuation(tokens) {
+  const result = [];
+
+  for (const token of tokens) {
+    if (token.type === 'text' && token.value.length > 1) {
+      for (const char of token.value) {
+        result.push({ type: 'text', value: char });
+      }
+    } else {
+      result.push(token);
+    }
+  }
+
+  return result;
+}
+
 async function transliterate(text, dictionary) {
   text = text.replace(/([A-Za-z])`([A-Za-z])/g, "$1'$2");
 
   const parts = text.match(/[A-Za-z]+(?:'[A-Za-z]+)*|\s+|[^A-Za-z\s]+/g) || [];
+
+  console.log(parts);
 
   return parts.map((part) => {
     if (part === "'" || part === '’') {
@@ -438,14 +458,18 @@ function splitSentencesRix(tokens) {
 
 function applyRixespekPunctuation(tokens) {
   const sentences = splitSentences(tokens);
-
   const isSingleSentence = sentences.length === 1;
 
   const result = [];
 
-  for (const sentence of sentences) {
+  console.log('sentences', sentences);
+
+  for (let i = 0; i < sentences.length; i++) {
+    const sentence = sentences[i];
+
     let mark = null;
 
+    // Detect "!" or "?".
     for (const token of sentence) {
       if (
         token.type === 'text' &&
@@ -456,20 +480,39 @@ function applyRixespekPunctuation(tokens) {
       }
     }
 
-    const cleaned = sentence.filter((t) => {
+    const prev = sentences[i - 1];
+    const prevHadStrongMark = prev?.some(
+      (t) => t.type === 'text' && (t.value === '!' || t.value === '?'),
+    );
+
+    // Clean sentence.
+    let cleaned = sentence.filter((t) => {
       if (t.type !== 'text') return true;
 
-      if (t.value === '!' || t.value === '?') return false;
+      // remove ALL sentence-ending punctuation.
+      if (t.value === '.' || t.value === '!' || t.value === '?') return false;
 
-      if (isSingleSentence && (t.value === '.' || t.value === ',')) {
+      if (isSingleSentence && t.value === ',') {
         return false;
       }
 
       return true;
     });
 
+    // detect if original sentence ended with "."
+    const hadDot = sentence.some((t) => t.type === 'text' && t.value === '.');
+
+    // Add punctuation at start.
     if (mark) {
       result.push({ type: 'text', value: mark });
+
+      if (hadDot) {
+        result.push({ type: 'text', value: '.' });
+      }
+    } else if (prevHadStrongMark) {
+      if (hadDot) {
+        result.push({ type: 'text', value: '.' });
+      }
     }
 
     result.push(...cleaned);
@@ -482,10 +525,21 @@ function applyEnglishPunctuation(tokens) {
   const sentences = splitSentencesRix(tokens);
   const result = [];
 
+  console.log('sentences', sentences);
+
   for (const sentence of sentences) {
     let mark = null;
 
-    // Check if sentence starts with "!" or "?".
+    // Step 1: remove leading dot (if exists).
+    if (
+      sentence.length &&
+      sentence[0].type === 'text' &&
+      sentence[0].value === '.'
+    ) {
+      sentence.shift();
+    }
+
+    // Step 2: check for "!" or "?" at start.
     if (
       sentence.length &&
       sentence[0].type === 'text' &&
@@ -496,7 +550,7 @@ function applyEnglishPunctuation(tokens) {
 
     result.push(...sentence);
 
-    // Add punctuation at the end.
+    // Step 3: restore punctuation.
     if (mark) {
       result.push({ type: 'text', value: mark });
     } else {
