@@ -480,32 +480,29 @@ function applyRixespekPunctuation(tokens) {
 
 function applyEnglishPunctuation(tokens) {
   const sentences = splitSentencesRix(tokens);
-
   const result = [];
 
   for (const sentence of sentences) {
     let mark = null;
 
-    // 1. detect leading "!" or "?".
+    // Check if sentence starts with "!" or "?".
     if (
       sentence.length &&
       sentence[0].type === 'text' &&
       (sentence[0].value === '!' || sentence[0].value === '?')
     ) {
-      mark = sentence[0].value;
-      sentence.shift(); // Remove it.
+      mark = sentence.shift().value;
     }
 
-    // 2. Push sentence content.
     result.push(...sentence);
 
-    // 3. Restore punctuation at the end.
+    // Add punctuation at the end.
     if (mark) {
       result.push({ type: 'text', value: mark });
     } else {
       const last = sentence[sentence.length - 1];
 
-      if (last && !(last.type === 'text' && /[.!?]/.test(last.value))) {
+      if (!last || !(last.type === 'text' && /[.!?]/.test(last.value))) {
         result.push({ type: 'text', value: '.' });
       }
     }
