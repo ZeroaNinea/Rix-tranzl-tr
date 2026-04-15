@@ -185,7 +185,9 @@ createApp({
         tokens = applyRixespekPunctuation(tokens);
       } else {
         tokens = await reverseTransliterate(this.input, this.rixToEn);
-        console.log(tokens);
+        tokens = applyEnglishPunctuation(tokens);
+        tokens = capitalizeSentence(tokens);
+        // console.log(tokens);
       }
 
       this.outputTokens = tokens;
@@ -407,6 +409,33 @@ function splitSentences(tokens) {
   return sentences;
 }
 
+function splitSentencesRix(tokens) {
+  const sentences = [];
+  let current = [];
+
+  for (const token of tokens) {
+    // Start of a new sentence if we see "!" or "?"
+    if (token.type === 'text' && (token.value === '!' || token.value === '?')) {
+      if (current.length) {
+        sentences.push(current);
+        current = [];
+      }
+    }
+
+    current.push(token);
+
+    // End of sentence ONLY on "."
+    if (token.type === 'text' && token.value === '.') {
+      sentences.push(current);
+      current = [];
+    }
+  }
+
+  if (current.length) sentences.push(current);
+
+  return sentences;
+}
+
 function applyRixespekPunctuation(tokens) {
   const sentences = splitSentences(tokens);
 
@@ -447,6 +476,55 @@ function applyRixespekPunctuation(tokens) {
   }
 
   return result;
+}
+
+function applyEnglishPunctuation(tokens) {
+  const sentences = splitSentencesRix(tokens);
+
+  const result = [];
+
+  for (const sentence of sentences) {
+    let mark = null;
+
+    // 1. detect leading "!" or "?".
+    if (
+      sentence.length &&
+      sentence[0].type === 'text' &&
+      (sentence[0].value === '!' || sentence[0].value === '?')
+    ) {
+      mark = sentence[0].value;
+      sentence.shift(); // Remove it.
+    }
+
+    // 2. Push sentence content.
+    result.push(...sentence);
+
+    // 3. Restore punctuation at the end.
+    if (mark) {
+      result.push({ type: 'text', value: mark });
+    } else {
+      const last = sentence[sentence.length - 1];
+
+      if (last && !(last.type === 'text' && /[.!?]/.test(last.value))) {
+        result.push({ type: 'text', value: '.' });
+      }
+    }
+  }
+
+  return result;
+}
+
+function capitalizeSentence(tokens) {
+  console.log(tokens);
+  for (let i = 0; i < tokens.length; i++) {
+    if (tokens[i].type === 'word') {
+      tokens[i].value =
+        tokens[i].value[0].toUpperCase() + tokens[i].value.slice(1);
+      break;
+    }
+  }
+
+  return tokens;
 }
 
 function levenshtein(a, b) {
