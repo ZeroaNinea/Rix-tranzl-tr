@@ -455,12 +455,21 @@ function splitSentencesRix(tokens) {
   let current = [];
 
   for (const token of tokens) {
+    // If we see "!" or "?", it starts a new sentence.
+    if (token.type === 'text' && (token.value === '!' || token.value === '?')) {
+      if (current.length) {
+        sentences.push(current);
+      }
+
+      // Start new sentence with the mark.
+      current = [token];
+      continue;
+    }
+
     current.push(token);
 
-    if (
-      token.type === 'text' &&
-      (token.value === '.' || token.value === '!' || token.value === '?')
-    ) {
+    // "." ends a sentence normally.
+    if (token.type === 'text' && token.value === '.') {
       sentences.push(current);
       current = [];
     }
@@ -540,22 +549,20 @@ function applyEnglishPunctuation(tokens) {
 
   for (const sentence of sentences) {
     let mark = null;
-    let hasDot = false;
 
-    // Detect punctuation.
-    for (const t of sentence) {
-      if (t.type !== 'text') continue;
-
-      if (t.value === '!' || t.value === '?') {
-        mark = t.value;
-      }
-
-      if (t.value === '.') {
-        hasDot = true;
-      }
+    // Step 1: check if sentence STARTS with "!" or "?".
+    if (
+      sentence.length &&
+      sentence[0].type === 'text' &&
+      (sentence[0].value === '!' || sentence[0].value === '?')
+    ) {
+      mark = sentence.shift().value;
     }
 
-    // Remove all punctuation.
+    // Step 2: detect dot.
+    let hasDot = sentence.some((t) => t.type === 'text' && t.value === '.');
+
+    // Step 3: remove punctuation.
     const cleaned = sentence.filter(
       (t) =>
         !(
@@ -566,7 +573,7 @@ function applyEnglishPunctuation(tokens) {
 
     result.push(...cleaned);
 
-    // Restore correct punctuation.
+    // Step 4: restore punctuation.
     if (mark) {
       result.push({ type: 'text', value: mark });
     } else if (hasDot || cleaned.length) {
